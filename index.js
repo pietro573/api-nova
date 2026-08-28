@@ -48,10 +48,89 @@ app.get("/cliente", async (req, res) => {
 
 // `SELECT nome, cpf, email, celular FROM cliente WHERE id = ?`, [id]
 
+// GET - um cliente específico pelo id
+app.get("/cliente/:id", async (req, res) => {
+    try {
+        const { id } = req.params
 
+        const resultado = await db.pool.query(
+            `SELECT id, nome, cpf, email, celular FROM cliente WHERE id = ?`,
+            [id]
+        )
 
+        if (resultado[0].length === 0) {
+            return res.status(404).json({ mensagem: "Cliente não encontrado" })
+        }
 
+        res.status(200).json(resultado[0][0])
+    } catch (error) {
+        res.status(500).json({ erro: error.message })
+    }
+})
 
+// PUT - atualizar cliente
+app.put("/cliente/:id", async (req, res) => {
+    try {
+        const { id } = req.params
+        const cliente = req.body
+
+        const existente = await db.pool.query(
+            `SELECT id FROM cliente WHERE id = ?`,
+            [id]
+        )
+
+        if (existente[0].length === 0) {
+            return res.status(404).json({ mensagem: "Cliente não encontrado" })
+        }
+
+        let senha = cliente.senha
+        if (senha) {
+            senha = bcrypt.hashSync(senha, 10)
+        }
+
+        await db.pool.query(
+            `UPDATE cliente SET
+                nome = ?,
+                cpf = ?,
+                email = ?,
+                senha = COALESCE(?, senha),
+                celular = ?
+             WHERE id = ?`,
+            [
+                cliente.nome,
+                cliente.cpf,
+                cliente.email,
+                senha || null,
+                cliente.celular,
+                id
+            ]
+        )
+
+        res.status(200).json({ mensagem: "Cliente atualizado" })
+    } catch (error) {
+        res.status(500).json({ erro: error.message })
+    }
+})
+
+// DELETE - remover cliente
+app.delete("/cliente/:id", async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const resultado = await db.pool.query(
+            `DELETE FROM cliente WHERE id = ?`,
+            [id]
+        )
+
+        if (resultado[0].affectedRows === 0) {
+            return res.status(404).json({ mensagem: "Cliente não encontrado" })
+        }
+
+        res.status(200).json({ mensagem: "Cliente removido" })
+    } catch (error) {
+        res.status(500).json({ erro: error.message })
+    }
+})
 
 
 app.listen(port, () => {
