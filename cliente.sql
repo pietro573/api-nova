@@ -29,27 +29,25 @@ CREATE TABLE endereço
  estado VARCHAR (100) NOT NULL,  
  UNIQUE (numero)
 ); 
-
-CREATE TABLE produto 
-( 
- id INT PRIMARY KEY,  
- nome VARCHAR (100) NOT NULL,  
- descrição VARCHAR (200) NOT NULL,  
- categoria VARCHAR (200) NOT NULL,  
- preço INT NOT NULL,  
- caminho_img VARCHAR (400) NOT NULL,  
- quantidade_img INT NOT NULL,  
-); 
-
-CREATE TABLE possui 
-( 
- idCOMPRA INT,  
- idPRODUTO INT,  
- quantidade INT NOT NULL,  
- valor_unitario FLOAT NOT NULL,  
- UNIQUE (id,id)
-); 
-
+CREATE TABLE produto (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  nome VARCHAR(100) NOT NULL,
+  descricao VARCHAR(200) NOT NULL,
+  categoria VARCHAR(200) NOT NULL,
+  preco DECIMAL(10,2) NOT NULL,
+  caminho_img VARCHAR(400) NOT NULL,
+  quantidade INT NOT NULL DEFAULT 0
+);
+CREATE TABLE possui (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  id_compra INT NOT NULL,
+  id_produto INT NOT NULL,
+  quantidade INT NOT NULL,
+  valor_unitario DECIMAL(10,2) NOT NULL,
+  UNIQUE (id_compra, id_produto),
+  FOREIGN KEY (id_compra) REFERENCES compra(id),
+  FOREIGN KEY (id_produto) REFERENCES produto(id)
+);
 ALTER TABLE compra ADD FOREIGN KEY(idcliente) REFERENCES cliente (idcliente)
 ALTER TABLE compra ADD FOREIGN KEY(idendereço) REFERENCES endereço (idendereço)
 ALTER TABLE endereço ADD FOREIGN KEY(idcliente) REFERENCES cliente (idcliente)
