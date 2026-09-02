@@ -18,7 +18,7 @@ app.post("/cliente", async (req, res) => {
         const senhaCript = bcrypt.hashSync(cliente.senha, 10)
         cliente.senha = senhaCript
 
-        // envio para o BD
+       
         const resultado = await db.pool.query(
             `INSERT INTO cliente (
               nome, cpf, email, senha, celular
