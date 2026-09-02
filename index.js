@@ -46,9 +46,7 @@ app.get("/cliente", async (req, res) => {
     }  
 })
 
-// `SELECT nome, cpf, email, celular FROM cliente WHERE id = ?`, [id]
 
-// GET - um cliente específico pelo id
 app.get("/cliente/:id", async (req, res) => {
     try {
         const { id } = req.params
@@ -68,7 +66,7 @@ app.get("/cliente/:id", async (req, res) => {
     }
 })
 
-// PUT - atualizar cliente
+
 app.put("/cliente/:id", async (req, res) => {
     try {
         const { id } = req.params
@@ -112,7 +110,7 @@ app.put("/cliente/:id", async (req, res) => {
     }
 })
 
-// DELETE - remover cliente
+
 app.delete("/cliente/:id", async (req, res) => {
     try {
         const { id } = req.params
