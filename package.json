@@ -1,17 +1,16 @@
 {
-  "name": "projeto_final",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.2.1",
+    "mysql2": "^3.24.3"
+  },
+  "name": "nova-pasta",
   "version": "1.0.0",
-  "description": "",
-  "license": "ISC",
-  "author": "",
-  "type": "commonjs",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "bcrypt": "^6.0.0",
-    "express": "^5.2.1",
-    "mysql2": "^3.24.2"
-  }
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
