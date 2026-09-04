@@ -130,7 +130,25 @@ app.delete("/cliente/:id", async (req, res) => {
     }
 })
 
+app.post("/login", async (req,res) => {
+    try{
+        const user = req.body
+        const resultado = await db.pool.query(
+            "SELECT email,  senha FROM cliente WHERE email = ?", [user.email]
+        )
+        const dados_bd = resultado[0][0]
+        if(!dados_bd) {
+            return res.status(401).json({msg: "email não encontrado!"})
+        }
+        if(user.senha != dados_bd) {
+            return res.status(401).json({msg: "credenciais erradas!"})
+        }
+        return res.status(200).json({msg: "login realizado com sucesso"})
 
+    } catch (error) {
+        res.status(500).json({ erro: error.message })
+    }
+})
 app.listen(port, () => {
     console.log("API rodando na porta " + port)
 })
